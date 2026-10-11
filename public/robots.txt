@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://octane.technology/sitemap.xml

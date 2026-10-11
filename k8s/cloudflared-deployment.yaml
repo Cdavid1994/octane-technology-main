@@ -6,7 +6,7 @@ metadata:
   name: cloudflared-config
 data:
   config.yml: |
-    tunnel: octane-cluster-tunnel
+    tunnel: f4f6e8c8-ce9e-420f-8b0d-9290f43e2864
     credentials-file: /etc/cloudflared/creds/credentials.json
     ingress:
       - hostname: octane.technology

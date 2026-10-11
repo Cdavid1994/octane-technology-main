@@ -157,7 +157,7 @@ export const translations = {
         contact: 'Contact',
       },
       rights: 'All rights reserved.',
-      bottomLine: 'Built for systems that cannot afford to slow down.',
+      bottomLine: 'Building systems that cannot afford to slow down.',
     },
   },
   es: {
@@ -318,7 +318,7 @@ export const translations = {
         contact: 'Contacto',
       },
       rights: 'Todos los derechos reservados.',
-      bottomLine: 'Construido para sistemas que no se pueden dar el lujo de ir lento.',
+      bottomLine: 'Construyendo sistemas que no se pueden dar el lujo de ir lento.',
     },
   },
 }

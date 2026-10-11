@@ -1,5 +1,15 @@
-# In-cluster cloudflared connector (alternative to running it locally).
-# Requires the ConfigMap and Secret created by setup-tunnel.sh (step 6).
+# In-cluster cloudflared connector — this is what production actually runs.
+#
+# Hardening notes (see also k8s/cloudflared-networkpolicy.yaml):
+# - ingress below has exactly one hostname -> one internal Service, with an
+#   explicit `http_status:404` catch-all for anything else the tunnel is
+#   asked to route. Nothing reaches this cluster through the tunnel except
+#   octane.technology -> octane-site:80.
+# - automountServiceAccountToken is disabled: cloudflared only makes one
+#   outbound HTTP call to a hardcoded internal DNS name, it never talks to
+#   the Kubernetes API, so it has no business holding a token that could.
+# - image is pinned to a specific version, not `:latest`, so a redeploy
+#   can't silently pull a different cloudflared build.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -29,14 +39,28 @@ spec:
       labels:
         app: cloudflared
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest
+          image: cloudflare/cloudflared:2026.10.0
           args:
             - tunnel
             - --config
             - /etc/cloudflared/config.yml
             - run
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['ALL']
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
           volumeMounts:
             - name: config
               mountPath: /etc/cloudflared
@@ -44,6 +68,8 @@ spec:
             - name: creds
               mountPath: /etc/cloudflared/creds
               readOnly: true
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: config
           configMap:
@@ -51,3 +77,5 @@ spec:
         - name: creds
           secret:
             secretName: cloudflared-credentials
+        - name: tmp
+          emptyDir: {}

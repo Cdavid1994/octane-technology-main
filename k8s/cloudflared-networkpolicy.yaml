@@ -1,0 +1,41 @@
+# Defense-in-depth: even if the cloudflared pod were compromised, this
+# restricts what it can reach at the cluster-network level — egress limited
+# to the octane-site Service (port 80) plus DNS, no ingress accepted at all
+# (the tunnel is outbound-only; it never listens for inbound cluster traffic).
+#
+# ⚠️ NOT enforced on this cluster today. Minikube's default CNI (kindnet)
+# does not implement NetworkPolicy — applying this manifest is a no-op here,
+# confirmed via `kubectl get pods -n kube-system` (only kindnet, no
+# Calico/Cilium). It's included so the restriction is correct and takes
+# effect automatically on any policy-enforcing CNI (every major managed
+# Kubernetes: GKE, EKS, AKS, or `minikube start --cni=calico` locally).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cloudflared-egress
+spec:
+  podSelector:
+    matchLabels:
+      app: cloudflared
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: [] # nothing is allowed to initiate a connection to this pod
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: octane-site
+      ports:
+        - protocol: TCP
+          port: 80
+    - to: [] # DNS and the outbound tunnel connection to Cloudflare's edge
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+        - protocol: TCP
+          port: 443
+        - protocol: UDP
+          port: 7844 # cloudflared QUIC edge connections

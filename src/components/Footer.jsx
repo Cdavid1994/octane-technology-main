@@ -1,14 +1,9 @@
 const CURRENT_YEAR = new Date().getFullYear()
 
-const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/octane-technology' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/company/octane-technology' },
-  { label: 'X', href: 'https://x.com/octanetech' },
-]
-
 const LINKS = [
   { label: 'Solutions', href: '#solutions' },
   { label: 'Performance', href: '#performance' },
+  { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -27,37 +22,17 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex gap-12">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40">Company</p>
-              <ul className="mt-4 space-y-2">
-                {LINKS.map((link) => (
-                  <li key={link.href}>
-                    <a href={link.href} className="text-sm text-white/60 transition hover:text-cyan">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40">Connect</p>
-              <ul className="mt-4 space-y-2">
-                {SOCIALS.map((social) => (
-                  <li key={social.href}>
-                    <a
-                      href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-sm text-white/60 transition hover:text-cyan"
-                    >
-                      {social.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-white/40">Company</p>
+            <ul className="mt-4 space-y-2">
+              {LINKS.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} className="text-sm text-white/60 transition hover:text-cyan">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

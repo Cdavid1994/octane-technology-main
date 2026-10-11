@@ -9,7 +9,7 @@ const LINKS = [
 
 export default function Footer() {
   return (
-    <footer id="contact" className="border-t border-line bg-ink">
+    <footer className="border-t border-line bg-ink">
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           <div className="max-w-sm">

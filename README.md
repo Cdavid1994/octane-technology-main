@@ -107,12 +107,31 @@ the custom domain in GitHub Pages settings (or commit a `CNAME` file)
 without removing the Cloudflare DNS route first, or the two will fight
 over the same hostname.
 
+## Contact form
+
+The Contact section (`src/components/Contact.jsx`) posts to
+[Splitforms](https://splitforms.com) — a hosted form backend, no server of
+our own needed. It needs a form access key to actually send anything:
+
+1. Create a free form at [splitforms.com/dashboard](https://splitforms.com/dashboard) (500 free submissions/month, no card required).
+2. Copy `.env.example` to `.env` and set `VITE_SPLITFORMS_ACCESS_KEY`.
+3. Set the same variable as a build-time secret wherever the image is built
+   (it gets baked into the static bundle at `npm run build`, same as any
+   Vite `VITE_*` env var — there's no server to hold it at runtime).
+
+Until that key is set, the form shows a clear "not configured" message on
+submit instead of silently failing or spamming a request with no destination.
+
+Includes client-side validation, a honeypot + time-trap pair (Splitforms
+flags both), accessible labels/`aria-describedby` error text, and inline
+submitting/success/error states — no page reload.
+
 ## What's still a placeholder
 
 - Hero/Metrics numbers (uptime, latency, systems deployed) are illustrative,
   not real figures.
 - `About` copy is generic — it hasn't been written from the company's
   actual story.
-- No real contact channel (email, form) is wired up yet; CTAs just scroll
-  to the footer.
+- The contact form has no destination yet — see [Contact form](#contact-form)
+  above, it just needs a Splitforms access key.
 - No client logos, case studies, or legal pages (privacy policy, terms).

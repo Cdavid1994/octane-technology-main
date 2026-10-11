@@ -1,13 +1,18 @@
+import { useLanguage } from '../i18n/useLanguage'
+
 const CURRENT_YEAR = new Date().getFullYear()
 
-const LINKS = [
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'Performance', href: '#performance' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
-]
-
 export default function Footer() {
+  const { t } = useLanguage()
+  const { footer } = t
+
+  const links = [
+    { label: footer.links.solutions, href: '#solutions' },
+    { label: footer.links.performance, href: '#performance' },
+    { label: footer.links.about, href: '#about' },
+    { label: footer.links.contact, href: '#contact' },
+  ]
+
   return (
     <footer className="border-t border-line bg-ink">
       <div className="mx-auto max-w-6xl px-6 py-16">
@@ -16,16 +21,13 @@ export default function Footer() {
             <p className="font-display text-lg font-semibold text-white">
               OCTANE<span className="text-cyan">.</span>
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-white/50">
-              High-performance software engineering, infrastructure optimization, and
-              observability for teams that run at scale.
-            </p>
+            <p className="mt-3 text-sm leading-relaxed text-white/50">{footer.tagline}</p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-white/40">Company</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-white/40">{footer.companyHeader}</p>
             <ul className="mt-4 space-y-2">
-              {LINKS.map((link) => (
+              {links.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} className="text-sm text-white/60 transition hover:text-cyan">
                     {link.label}
@@ -37,8 +39,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {CURRENT_YEAR} Octane Technology. All rights reserved.</p>
-          <p>Built for systems that cannot afford to slow down.</p>
+          <p>
+            &copy; {CURRENT_YEAR} Octane Technology. {footer.rights}
+          </p>
+          <p>{footer.bottomLine}</p>
         </div>
       </div>
     </footer>

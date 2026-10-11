@@ -21,8 +21,9 @@ tunnel over DNS) at `https://<owner>.github.io/<repo>/`.
 ```text
 .
 ├── src/
-│   ├── components/        Navbar, Hero, Features, Metrics, About, Footer
+│   ├── components/        Navbar, Hero, Features, Metrics, About, Contact, Footer
 │   ├── hooks/              useCountUp — intersection-triggered counters
+│   ├── i18n/                translations.js (en/es), LanguageContext, useLanguage
 │   ├── test/                Vitest setup (jsdom, IntersectionObserver stub)
 │   ├── App.jsx · App.test.jsx
 │   ├── main.jsx
@@ -107,6 +108,25 @@ the custom domain in GitHub Pages settings (or commit a `CNAME` file)
 without removing the Cloudflare DNS route first, or the two will fight
 over the same hostname.
 
+## Language toggle (EN / ES)
+
+The site is primarily English, with a full Spanish translation behind an
+EN/ES toggle in the navbar (both desktop and mobile). All copy — including
+the expanded About section's story, pillar matrix, and closing quote — is
+translated; there's no mixed-language state.
+
+- `src/i18n/translations.js` — single source of truth, one object per
+  locale (`en`, `es`), mirrored key-for-key.
+- `src/i18n/context.js` + `LanguageContext.jsx` — React context holding
+  `{ lang, t, toggleLang }`; `t` is just `translations[lang]`.
+- `src/i18n/useLanguage.js` — the hook components call: `const { t } = useLanguage()`.
+- The chosen language persists to `localStorage` (`octane-lang`) and sets
+  `<html lang>` for accessibility/SEO.
+
+To add a new piece of copy: add the key under both `en` and `es` in
+`translations.js`, then read it via `t.<section>.<key>` in the component —
+never hardcode user-facing strings directly in a component.
+
 ## Contact form
 
 The Contact section (`src/components/Contact.jsx`) posts to
@@ -130,8 +150,4 @@ submitting/success/error states — no page reload.
 
 - Hero/Metrics numbers (uptime, latency, systems deployed) are illustrative,
   not real figures.
-- `About` copy is generic — it hasn't been written from the company's
-  actual story.
-- The contact form has no destination yet — see [Contact form](#contact-form)
-  above, it just needs a Splitforms access key.
 - No client logos, case studies, or legal pages (privacy policy, terms).

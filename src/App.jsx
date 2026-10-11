@@ -5,20 +5,23 @@ import Footer from './components/Footer'
 import Hero from './components/Hero'
 import Metrics from './components/Metrics'
 import Navbar from './components/Navbar'
+import { LanguageProvider } from './i18n/LanguageContext'
 
 function App() {
   return (
-    <div className="bg-ink min-h-screen">
-      <Navbar />
-      <main>
-        <Hero />
-        <Features />
-        <Metrics />
-        <About />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <div className="bg-ink min-h-screen">
+        <Navbar />
+        <main>
+          <Hero />
+          <Features />
+          <Metrics />
+          <About />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </LanguageProvider>
   )
 }
 

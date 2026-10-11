@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLanguage } from '../i18n/useLanguage'
 
 const SPLITFORMS_ENDPOINT = 'https://splitforms.com/api/submit'
 const ACCESS_KEY = import.meta.env.VITE_SPLITFORMS_ACCESS_KEY
@@ -7,6 +8,9 @@ const INITIAL_FORM = { name: '', email: '', company: '', message: '' }
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export default function Contact() {
+  const { t } = useLanguage()
+  const { contact } = t
+
   const [form, setForm] = useState(INITIAL_FORM)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
@@ -20,10 +24,10 @@ export default function Contact() {
 
   const validate = () => {
     const next = {}
-    if (!form.name.trim()) next.name = 'Tell us who you are.'
-    if (!form.email.trim()) next.email = 'We need an email to reply to.'
-    else if (!EMAIL_PATTERN.test(form.email)) next.email = 'That email doesn’t look right.'
-    if (!form.message.trim()) next.message = 'Give us a few words about the project.'
+    if (!form.name.trim()) next.name = contact.errorName
+    if (!form.email.trim()) next.email = contact.errorEmail
+    else if (!EMAIL_PATTERN.test(form.email)) next.email = contact.errorEmailInvalid
+    if (!form.message.trim()) next.message = contact.errorMessage
     return next
   }
 
@@ -36,7 +40,7 @@ export default function Contact() {
 
     if (!ACCESS_KEY) {
       setStatus('error')
-      setServerError('Contact form isn’t configured yet (missing Splitforms access key).')
+      setServerError(contact.errorNotConfigured)
       return
     }
 
@@ -61,7 +65,7 @@ export default function Contact() {
           message: form.message,
           from_name: form.name,
           replyto: form.email,
-          subject: `New project inquiry from ${form.name}`,
+          subject: `${contact.subjectPrefix} ${form.name}`,
           botcheck: '',
           form_loaded_at: loadedAt.current,
         }),
@@ -70,14 +74,14 @@ export default function Contact() {
       const data = await res.json()
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Something went wrong sending your message.')
+        throw new Error(data.message || contact.errorGeneric)
       }
 
       setStatus('success')
       setForm(INITIAL_FORM)
     } catch (err) {
       setStatus('error')
-      setServerError(err.message || 'Something went wrong sending your message.')
+      setServerError(err.message || contact.errorGeneric)
     }
   }
 
@@ -85,16 +89,14 @@ export default function Contact() {
     return (
       <section id="contact" className="relative py-24">
         <div className="mx-auto max-w-xl px-6 text-center">
-          <h2 className="font-display text-3xl font-semibold text-white">Message sent</h2>
-          <p className="mt-3 text-white/60">
-            Thanks — we read every message and reply within one business day.
-          </p>
+          <h2 className="font-display text-3xl font-semibold text-white">{contact.successTitle}</h2>
+          <p className="mt-3 text-white/60">{contact.successBody}</p>
           <button
             type="button"
             onClick={() => setStatus('idle')}
             className="mt-6 text-sm font-medium text-cyan hover:underline"
           >
-            Send another message
+            {contact.successAgain}
           </button>
         </div>
       </section>
@@ -105,13 +107,11 @@ export default function Contact() {
     <section id="contact" className="relative py-24">
       <div className="mx-auto max-w-xl px-6">
         <div className="text-center">
-          <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-octane">Contact</h2>
-          <p className="font-display mt-3 text-3xl font-semibold text-white sm:text-4xl">
-            Tell us about the system you're building
-          </p>
-          <p className="mt-3 text-white/55">
-            A few details now saves a round trip later — we'll come back with real questions, not a sales script.
-          </p>
+          <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-octane">
+            {contact.eyebrow}
+          </h2>
+          <p className="font-display mt-3 text-3xl font-semibold text-white sm:text-4xl">{contact.title}</p>
+          <p className="mt-3 text-white/55">{contact.subtitle}</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate className="mt-10 space-y-5">
@@ -127,7 +127,7 @@ export default function Contact() {
 
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-white/80">
-              Name
+              {contact.labelName}
             </label>
             <input
               id="name"
@@ -137,7 +137,7 @@ export default function Contact() {
               aria-invalid={Boolean(errors.name)}
               aria-describedby={errors.name ? 'name-error' : undefined}
               className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-2.5 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none"
-              placeholder="Ada Lovelace"
+              placeholder={contact.placeholderName}
             />
             {errors.name && (
               <p id="name-error" className="mt-1.5 text-sm text-octane">
@@ -148,7 +148,7 @@ export default function Contact() {
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-white/80">
-              Email
+              {contact.labelEmail}
             </label>
             <input
               id="email"
@@ -158,7 +158,7 @@ export default function Contact() {
               aria-invalid={Boolean(errors.email)}
               aria-describedby={errors.email ? 'email-error' : undefined}
               className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-2.5 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none"
-              placeholder="ada@yourcompany.com"
+              placeholder={contact.placeholderEmail}
             />
             {errors.email && (
               <p id="email-error" className="mt-1.5 text-sm text-octane">
@@ -169,7 +169,7 @@ export default function Contact() {
 
           <div>
             <label htmlFor="company" className="block text-sm font-medium text-white/80">
-              Company <span className="text-white/40">(optional)</span>
+              {contact.labelCompany} <span className="text-white/40">{contact.labelCompanyOptional}</span>
             </label>
             <input
               id="company"
@@ -177,13 +177,13 @@ export default function Contact() {
               value={form.company}
               onChange={update('company')}
               className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-2.5 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none"
-              placeholder="Analytical Engines Inc."
+              placeholder={contact.placeholderCompany}
             />
           </div>
 
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-white/80">
-              What are you building?
+              {contact.labelMessage}
             </label>
             <textarea
               id="message"
@@ -193,7 +193,7 @@ export default function Contact() {
               aria-invalid={Boolean(errors.message)}
               aria-describedby={errors.message ? 'message-error' : undefined}
               className="mt-2 w-full resize-none rounded-lg border border-line bg-surface px-4 py-2.5 text-white placeholder:text-white/30 focus:border-cyan focus:outline-none"
-              placeholder="Current stack, the bottleneck you're hitting, and what 'done' looks like."
+              placeholder={contact.placeholderMessage}
             />
             {errors.message && (
               <p id="message-error" className="mt-1.5 text-sm text-octane">
@@ -211,7 +211,7 @@ export default function Contact() {
             disabled={status === 'submitting'}
             className="glow-octane w-full rounded-full bg-octane px-7 py-3 text-sm font-semibold text-ink transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {status === 'submitting' ? 'Sending…' : 'Send message'}
+            {status === 'submitting' ? contact.submitSending : contact.submitIdle}
           </button>
         </form>
       </div>

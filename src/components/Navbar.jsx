@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react'
+import { useLanguage } from '../i18n/useLanguage'
 
-const LINKS = [
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'Performance', href: '#performance' },
-  { label: 'About', href: '#about' },
-]
+function LangToggle({ lang, toggleLang, className = '' }) {
+  return (
+    <button
+      type="button"
+      onClick={toggleLang}
+      aria-label={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a inglés'}
+      className={`flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:border-cyan/60 hover:text-cyan ${className}`}
+    >
+      <span className={lang === 'en' ? 'text-cyan' : ''}>EN</span>
+      <span className="text-white/30">/</span>
+      <span className={lang === 'es' ? 'text-cyan' : ''}>ES</span>
+    </button>
+  )
+}
 
 export default function Navbar() {
+  const { lang, toggleLang, t } = useLanguage()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -15,6 +26,12 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const links = [
+    { label: t.nav.solutions, href: '#solutions' },
+    { label: t.nav.performance, href: '#performance' },
+    { label: t.nav.about, href: '#about' },
+  ]
 
   return (
     <header
@@ -31,32 +48,32 @@ export default function Navbar() {
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <a key={link.href} href={link.href} className="text-sm text-white/70 transition hover:text-white">
               {link.label}
             </a>
           ))}
+          <LangToggle lang={lang} toggleLang={toggleLang} />
           <a
             href="#contact"
             className="rounded-full border border-cyan/60 px-4 py-2 text-sm font-medium text-cyan transition hover:bg-cyan hover:text-ink"
           >
-            Talk to Engineering
+            {t.nav.cta}
           </a>
         </div>
 
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setOpen((v) => !v)}
-          className="flex flex-col gap-1.5 md:hidden"
-        >
-          <span className="h-0.5 w-6 bg-white" />
-          <span className="h-0.5 w-6 bg-white" />
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <LangToggle lang={lang} toggleLang={toggleLang} />
+          <button aria-label="Toggle menu" onClick={() => setOpen((v) => !v)} className="flex flex-col gap-1.5">
+            <span className="h-0.5 w-6 bg-white" />
+            <span className="h-0.5 w-6 bg-white" />
+          </button>
+        </div>
       </nav>
 
       {open && (
         <div className="border-t border-line bg-ink px-6 py-4 md:hidden">
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -67,7 +84,7 @@ export default function Navbar() {
             </a>
           ))}
           <a href="#contact" onClick={() => setOpen(false)} className="mt-2 block py-2 text-sm font-medium text-cyan">
-            Talk to Engineering
+            {t.nav.cta}
           </a>
         </div>
       )}

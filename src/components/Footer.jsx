@@ -34,6 +34,11 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a href="/privacy" className="text-sm text-white/60 transition hover:text-cyan">
+                  {footer.privacy}
+                </a>
+              </li>
             </ul>
           </div>
         </div>

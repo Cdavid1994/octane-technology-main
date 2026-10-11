@@ -18,12 +18,20 @@ function Metric({ target, prefix = '', suffix = '', decimals = 0, label }) {
 
 export default function Metrics() {
   const { t } = useLanguage()
+  const { metrics } = t
 
   return (
     <section id="performance" className="relative border-y border-line bg-surface/50 py-20">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
-          {t.metrics.map((metric) => (
+        <div className="text-center">
+          <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-octane">
+            {metrics.eyebrow}
+          </h2>
+          <p className="font-display mt-3 text-2xl font-semibold text-white sm:text-3xl">{metrics.title}</p>
+        </div>
+
+        <div className="mt-12 grid grid-cols-2 gap-10 sm:grid-cols-4">
+          {metrics.items.map((metric) => (
             <Metric key={metric.label} {...metric} />
           ))}
         </div>

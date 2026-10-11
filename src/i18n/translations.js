@@ -47,12 +47,16 @@ export const translations = {
         },
       ],
     },
-    metrics: [
-      { target: 99.99, suffix: '%', decimals: 2, label: 'Uptime SLA' },
-      { target: 8, prefix: '<', suffix: 'ms', label: 'Average Latency' },
-      { target: 500, suffix: '+', label: 'Systems Deployed' },
-      { target: 24, suffix: '/7', label: 'Global Monitoring' },
-    ],
+    metrics: {
+      eyebrow: 'Engineering Targets',
+      title: 'What we design every system to hit',
+      items: [
+        { target: 99.99, suffix: '%', decimals: 2, label: 'Uptime SLA Target' },
+        { target: 10, prefix: '<', suffix: 'ms', label: 'Latency Target' },
+        { target: 30, suffix: '%+', label: 'Target Cloud Cost Reduction' },
+        { target: 15, prefix: '<', suffix: 'min', label: 'Target Incident Detection' },
+      ],
+    },
     about: {
       eyebrow: 'About',
       headline: 'Precision Cloud Engineering. Zero Black Boxes.',
@@ -158,6 +162,40 @@ export const translations = {
       },
       rights: 'All rights reserved.',
       bottomLine: 'Building systems that cannot afford to slow down.',
+      privacy: 'Privacy Policy',
+    },
+    privacy: {
+      title: 'Privacy Policy',
+      intro:
+        "This page explains, plainly, what octane.technology collects when you use it and what we do with it. We'd rather keep this short and accurate than long and generic.",
+      sections: [
+        {
+          heading: 'What we collect',
+          body: "The contact form asks for your name, email, company (optional), and the message you write. We don't collect anything else — there's no account system, no checkout, and no tracking pixels on this site.",
+        },
+        {
+          heading: 'How your message is handled',
+          body: 'Contact form submissions are sent to Splitforms (splitforms.com), a third-party form backend we use to receive, spam-filter, and store messages, and to notify us by email. We don’t operate our own database of submissions — Splitforms is the processor. Review their own policy at splitforms.com for how they handle that data on their end.',
+        },
+        {
+          heading: 'Cookies & local storage',
+          body: 'The only thing this site stores in your browser is your EN/ES language preference, saved locally so we don’t ask again on your next visit. It never leaves your browser and contains no personal information. We don’t use advertising or tracking cookies, and we haven’t installed any analytics ourselves.',
+        },
+        {
+          heading: 'Third-party requests your browser may make',
+          body: 'This site is served through Cloudflare, which may attempt to load its own aggregate traffic-analytics script at the network edge; our content security policy blocks it by default. Fonts are loaded from Google Fonts (fonts.googleapis.com / fonts.gstatic.com), which sees a standard font-request connection from your browser like any site using Google Fonts.',
+        },
+        {
+          heading: 'Your data, your call',
+          body: 'If you want a message you sent us deleted, or want to know exactly what we have on file, just say so through the contact form — we read every submission ourselves and will act on it directly, since there’s no larger organization or support queue in between.',
+        },
+        {
+          heading: 'Changes to this page',
+          body: 'If what this site collects or how it’s handled changes, this page gets updated to match — not the other way around.',
+        },
+      ],
+      lastUpdatedLabel: 'Last updated',
+      backHome: '← Back to home',
     },
   },
   es: {
@@ -208,12 +246,16 @@ export const translations = {
         },
       ],
     },
-    metrics: [
-      { target: 99.99, suffix: '%', decimals: 2, label: 'SLA de Disponibilidad' },
-      { target: 8, prefix: '<', suffix: 'ms', label: 'Latencia Promedio' },
-      { target: 500, suffix: '+', label: 'Sistemas Desplegados' },
-      { target: 24, suffix: '/7', label: 'Monitoreo Global' },
-    ],
+    metrics: {
+      eyebrow: 'Objetivos de Ingeniería',
+      title: 'Lo que diseñamos para que cada sistema cumpla',
+      items: [
+        { target: 99.99, suffix: '%', decimals: 2, label: 'SLA de Disponibilidad Objetivo' },
+        { target: 10, prefix: '<', suffix: 'ms', label: 'Latencia Objetivo' },
+        { target: 30, suffix: '%+', label: 'Reducción de Costos Objetivo' },
+        { target: 15, prefix: '<', suffix: 'min', label: 'Detección de Incidentes Objetivo' },
+      ],
+    },
     about: {
       eyebrow: 'Nosotros',
       headline: 'Ingeniería Cloud de Precisión. Cero Cajas Negras.',
@@ -319,6 +361,40 @@ export const translations = {
       },
       rights: 'Todos los derechos reservados.',
       bottomLine: 'Construyendo sistemas que no se pueden dar el lujo de ir lento.',
+      privacy: 'Política de Privacidad',
+    },
+    privacy: {
+      title: 'Política de Privacidad',
+      intro:
+        'Esta página explica, en criollo, qué recolecta octane.technology cuando usás el sitio y qué hacemos con eso. Preferimos que sea corta y precisa, no larga y genérica.',
+      sections: [
+        {
+          heading: 'Qué recolectamos',
+          body: 'El formulario de contacto pide tu nombre, email, empresa (opcional) y el mensaje que escribís. No recolectamos nada más — no hay sistema de cuentas, no hay checkout, y no hay píxeles de rastreo en este sitio.',
+        },
+        {
+          heading: 'Cómo manejamos tu mensaje',
+          body: 'Los envíos del formulario de contacto se mandan a Splitforms (splitforms.com), un backend de formularios de terceros que usamos para recibir, filtrar spam, almacenar mensajes y notificarnos por email. No operamos nuestra propia base de datos de envíos — Splitforms es el procesador. Revisá su propia política en splitforms.com para saber cómo manejan esos datos de su lado.',
+        },
+        {
+          heading: 'Cookies y almacenamiento local',
+          body: 'Lo único que este sitio guarda en tu navegador es tu preferencia de idioma (EN/ES), guardada localmente para no preguntarte de nuevo en tu próxima visita. Nunca sale de tu navegador y no contiene información personal. No usamos cookies de publicidad ni de rastreo, y no instalamos ningún analytics propio.',
+        },
+        {
+          heading: 'Solicitudes de terceros que puede hacer tu navegador',
+          body: 'Este sitio se sirve a través de Cloudflare, que puede intentar cargar su propio script de analytics agregado a nivel de borde de red; nuestra política de seguridad de contenido lo bloquea por defecto. Las tipografías se cargan desde Google Fonts (fonts.googleapis.com / fonts.gstatic.com), que ve una conexión estándar de solicitud de fuente desde tu navegador, como cualquier sitio que use Google Fonts.',
+        },
+        {
+          heading: 'Tus datos, tu decisión',
+          body: 'Si querés que borremos un mensaje que nos enviaste, o querés saber exactamente qué tenemos registrado, decílo a través del formulario de contacto — leemos cada envío nosotros mismos y actuamos directamente, ya que no hay una organización grande ni una cola de soporte en el medio.',
+        },
+        {
+          heading: 'Cambios a esta página',
+          body: 'Si cambia lo que este sitio recolecta o cómo lo manejamos, esta página se actualiza para reflejarlo — no al revés.',
+        },
+      ],
+      lastUpdatedLabel: 'Última actualización',
+      backHome: '← Volver al inicio',
     },
   },
 }

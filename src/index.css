@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+
+  --color-ink: #0a0a0c;
+  --color-surface: #121216;
+  --color-surface-raised: #17181d;
+  --color-line: #232329;
+
+  --color-cyan: #00f0ff;
+  --color-cyan-dim: #0aa8b8;
+  --color-octane: #ff6a1a;
+  --color-octane-dim: #c44f10;
+
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+  --animate-drift: drift 24s linear infinite;
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 120px 120px;
+  }
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: #e6e6ea;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-cyan);
+  color: #04131a;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ffffff 0%, var(--color-cyan) 70%, var(--color-octane) 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grid-backdrop {
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 40%, transparent 85%);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 24px 0 rgba(0, 240, 255, 0.35);
+}
+
+.glow-octane {
+  box-shadow: 0 0 24px 0 rgba(255, 106, 26, 0.4);
+}
